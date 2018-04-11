@@ -1,0 +1,40 @@
+<div class="container">
+  <h1>Add New Registration Form</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <form (ngSubmit)="saveRegistrationForm()" #registrationFormForm="ngForm">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" [(ngModel)]="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="name">StudentId</label>
+          <input type="text" class="form-control" [(ngModel)]="studentId" name="studentId" required>
+        </div>
+        <div class="form-group">
+          <label for="name">Degree</label>
+          <input type="text" class="form-control" [(ngModel)]="degree" name="degree" required>
+        </div>
+        <div class="form-group">
+          <label for="name">Email</label>
+          <input type="email" class="form-control" [(ngModel)]="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="name">Advisor</label>
+          <input type="text" class="form-control" [(ngModel)]="advisor" name="advisor" required>
+        </div>
+        <div class="form-group">
+          <label for="name">Term</label>
+          <input type="text" class="form-control" [(ngModel)]="term" name="term" required>
+        </div>
+        <div class="form-group">
+          <label for="name">Crn</label>
+          <input type="text" class="form-control" [(ngModel)]="crns" name="crns"  required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-success" [disabled]="!registrationFormForm.form.valid">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

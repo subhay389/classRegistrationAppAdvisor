@@ -1,0 +1,28 @@
+<div class="container">
+  <h1>Registration Form
+    <h5><button (click)="logout()">logout</button></h5>
+  </h1>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Student Id</th>
+        <th>Term</th>
+        <th>Pin</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    <!-- <input [(ngModel)]="searchText" placeholder="search text goes here"> -->
+      <!-- <tr *ngFor="let form of registrationForm | filter : searchText"> -->
+      <tr *ngFor="let form of registrationForm "> 
+        <td>{{ form.name }}</td>
+        <td>{{ form.studentId }}</td>
+        <td>{{ form.term }}</td>
+        <td>{{ form.pin }}</td>
+        <td><a [routerLink]="['/registration-form-detail', form._id]">Details</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

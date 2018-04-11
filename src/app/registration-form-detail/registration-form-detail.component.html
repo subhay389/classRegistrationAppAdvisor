@@ -1,0 +1,31 @@
+<div class="container">
+  <h1>{{ registrationForm.term }}</h1>
+  <dl class="list">
+    <dt>Name</dt>
+    <dd>{{ registrationForm.name }}</dd>
+    <dt>Student Id</dt>
+    <dd>{{ registrationForm.studentId }}</dd>
+    <dt>Degree</dt>
+    <dd>{{ registrationForm.degree }}</dd>
+    <dt>Email</dt>
+    <dd>{{ registrationForm.email }}</dd>
+    <dt>Advisor</dt>
+    <dd>{{ registrationForm.advisor }}</dd>
+    <dt>Courses</dt>
+    <dd>      
+      <div *ngFor="let entry of my_crns | keys">
+      {{entry.key}}: {{entry.value}} <br>
+      </div>
+    </dd>
+    <dt>Pin</dt>
+    <dd>{{ registrationForm.pin }}</dd>
+  </dl>
+
+<div class="row">
+    <div class="col-md-12">
+      <a [routerLink]="['/registration-form-edit', registrationForm._id]" class="btn btn-success">EDIT</a>
+      <button class="btn btn-danger" type="button" (click)="deleteRegistrationForm(registrationForm._id)">DELETE</button>
+      <a [routerLink]="['/registration-form', registrationForm.advisor]" class="btn btn-primary">DONE</a>
+    </div>
+  </div>
+</div>
