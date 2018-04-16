@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+//Model schema for Registration Form
 var registrationFormSchema = new mongoose.Schema({
   name: String,
   studentId: String,
