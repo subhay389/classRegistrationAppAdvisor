@@ -1,0 +1,11 @@
+<h1 mat-dialog-title> {{data.name}} </h1>
+<div mat-dialog-content>
+  <p>{{data.studentId}}</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.pin">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.pin" cdkFocusInitial>Ok</button>
+</div>

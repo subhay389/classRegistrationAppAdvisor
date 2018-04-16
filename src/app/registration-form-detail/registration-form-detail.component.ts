@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { RegistrationFormService } from '../registration-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
 
 @Component({
   selector: 'app-registration-form-detail',
@@ -17,8 +19,10 @@ export class RegistrationFormDetailComponent implements OnInit {
   crn_array = [];
   my_crns = {};
   courses = [];
+  advisorName: any;
+  pin: any;
 
-  constructor(private route: ActivatedRoute, private router: Router, private registrationFormService: RegistrationFormService) { }
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, private registrationFormService: RegistrationFormService) { }
 
   ngOnInit() {
     this.getRegistrationFormDetail(this.route.snapshot.params['id']);
@@ -29,7 +33,9 @@ export class RegistrationFormDetailComponent implements OnInit {
       this.registrationForm = res;
       this.uid = this.registrationForm['uid'];
       this.advisorid = this.registrationForm['advisor']
-      //this.getOneAdvisor(this.registrationForm['advisor']);
+      console.log("advisor ID");
+      console.log(this.advisorid);
+      this.getAdvisorInfo(this.advisorid);
       this.registrationFormService.getCRN().then((res) => {
         this.all_crns = res[0];
         this.crn_array = this.registrationForm["crns"];
@@ -41,18 +47,10 @@ export class RegistrationFormDetailComponent implements OnInit {
             this.courses.push(this.all_crns[this.crn_array[i]]);
           }
         }
-        console.log(typeof this.all_crns);
-        console.log(typeof this.my_crns);
-        console.log(this.all_crns);
-        console.log(this.my_crns);
         var myJSON1 = JSON.stringify(this.all_crns);
         var myJSON2 = JSON.stringify(this.my_crns);
         this.all_crns = JSON.parse(myJSON1);
-        this.my_crns = JSON.parse(myJSON2);
-        console.log(myJSON1);
-        console.log(myJSON2);
-        console.log(typeof this.all_crns === typeof this.my_crns);
-        
+        this.my_crns = JSON.parse(myJSON2);    
       }, (err) => {
         console.log(err);
       });
@@ -61,15 +59,48 @@ export class RegistrationFormDetailComponent implements OnInit {
       console.log(err);
     });
   }
-  
-  deleteRegistrationForm(id) {
-    console.log(id)
-    this.registrationFormService.deleteRegistrationForm(id).then((result) => {
-      this.router.navigate(['/registration-form', this.uid]);
+
+  getAdvisorInfo(advisorid){
+
+    this.registrationFormService.getOneAdvisor(advisorid).then((result) => {
+      console.log("This Advisor")
+      console.log(result);
+      this.advisorName = result[0]["name"]
     }, (err) => {
       console.log(err);
     });
-  }       
+  }
 
+  openDialog(): void {
+    let dialogRef = this.dialog.open(RegistrationFormDetailAddCrnComponent, {
+      width: '250px',
+      disableClose: true,
+      data: { pin: this.pin, term: this.registrationForm['term'], name: this.registrationForm['name'], studentId: this.registrationForm['studentId']  }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.pin = result;
+      console.log(this.pin)
+    });
+  }
+
+
+
+}
+
+@Component({
+  selector: 'registration-form-detail-add-crn-dialog',
+  templateUrl: 'registration-form-detail-add-crn-dialog.html',
+})
+export class RegistrationFormDetailAddCrnComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<RegistrationFormDetailAddCrnComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
 }

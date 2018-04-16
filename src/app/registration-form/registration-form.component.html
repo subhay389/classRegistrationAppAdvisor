@@ -1,28 +1,106 @@
-<div class="container">
-  <h1>Registration Form
-    <h5><button (click)="logout()">logout</button></h5>
-  </h1>
+<mat-tab-group>
+  <mat-tab label= "Pending">
+    <div class="example-container mat-elevation-z8">
+        <div class="example-header">
+          <mat-form-field>
+            <input matInput (keyup)="applyFilterForPending($event.target.value)" placeholder="Filter">
+          </mat-form-field>
+        </div>
+      
+        <mat-table #table [dataSource]="pendingForms">
+      
+          <!-- Position Column -->
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+          </ng-container>
+      
+          <!-- Name Column -->
+          <ng-container matColumnDef="studentId">
+            <mat-header-cell *matHeaderCellDef> Student ID </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.studentId}} </mat-cell>
+          </ng-container>
+      
+          <!-- Weight Column -->
+          <ng-container matColumnDef="term">
+            <mat-header-cell *matHeaderCellDef> Term </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.term}} </mat-cell>
+          </ng-container>
+      
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="pin">
+            <mat-header-cell *matHeaderCellDef> Pin </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.pin}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="_id">
+              <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+              <mat-cell *matCellDef="let element"> <a [routerLink]="['/registration-form-detail', element._id]"> Details </a> </mat-cell>
+              <!-- <td><a [routerLink]="['/registration-form-detail', element._id]">Details</a></td> -->
+          </ng-container>
+
+            
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator
+          [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 20]"
+          [showFirstLastButtons]="true">
+        </mat-paginator>
+    </div>
+  </mat-tab>
+  <mat-tab label="Approved">
+      <div class="example-container mat-elevation-z8">
+          <div class="example-header">
+            <mat-form-field>
+              <input matInput (keyup)="applyFilterForApproved($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+          </div>
+        
+          <mat-table #table [dataSource]="approvedForms">
+        
+            <!-- Position Column -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
+        
+            <!-- Name Column -->
+            <ng-container matColumnDef="studentId">
+              <mat-header-cell *matHeaderCellDef> Student ID </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.studentId}} </mat-cell>
+            </ng-container>
+        
+            <!-- Weight Column -->
+            <ng-container matColumnDef="term">
+              <mat-header-cell *matHeaderCellDef> Term </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.term}} </mat-cell>
+            </ng-container>
+        
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="pin">
+              <mat-header-cell *matHeaderCellDef> Pin </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.pin}} </mat-cell>
+            </ng-container>
   
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Student Name</th>
-        <th>Student Id</th>
-        <th>Term</th>
-        <th>Pin</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-    <!-- <input [(ngModel)]="searchText" placeholder="search text goes here"> -->
-      <!-- <tr *ngFor="let form of registrationForm | filter : searchText"> -->
-      <tr *ngFor="let form of registrationForm "> 
-        <td>{{ form.name }}</td>
-        <td>{{ form.studentId }}</td>
-        <td>{{ form.term }}</td>
-        <td>{{ form.pin }}</td>
-        <td><a [routerLink]="['/registration-form-detail', form._id]">Details</a></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+            <ng-container matColumnDef="_id">
+                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                <mat-cell *matCellDef="let element"> <a [routerLink]="['/registration-form-detail', element._id]"> Details </a> </mat-cell>
+                <!-- <td><a [routerLink]="['/registration-form-detail', element._id]">Details</a></td> -->
+            </ng-container>
+  
+              
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+  
+          <mat-paginator #paginator
+            [pageSize]="10"
+            [pageSizeOptions]="[5, 10, 20]"
+            [showFirstLastButtons]="true">
+          </mat-paginator>
+      </div>
+  </mat-tab>
+</mat-tab-group>

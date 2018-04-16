@@ -38,7 +38,8 @@ export class RegistrationFormEditComponent implements OnInit {
       term: this.registrationForm["term"],
       crns: ((this.registrationForm["crns"])+ "").split(","),
       isApproved: this.registrationForm["isApproved"],
-      updated_at: Date.now
+      updated_at: Date.now,
+      pin: this.registrationForm["pin"]
     }
     this.registrationFormService.updateRegistrationForm(id, newRegistrationForm).then((result) => {
       this.router.navigate(['/registration-form-detail', id]);

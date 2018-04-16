@@ -20,6 +20,20 @@ export class RegistrationFormService {
     });
   }
 
+  getUser(id){
+    console.log('Inside service getUser()')
+    return new Promise((resolve, reject) => {
+      this.http.get('/registrationForm/getUser/' + id)
+        .map(res => res.json())
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+
   login(){
     console.log('Inside service login')
     return new Promise((resolve, reject) => {
@@ -74,6 +88,34 @@ export class RegistrationFormService {
   getCRN() {
     return new Promise((resolve, reject) => {
       this.http.get('/registrationForm/')
+        .map(res => res.json())
+        .subscribe(res => {
+          resolve(res)
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+
+  getAllAdvisor(id) {
+    
+    console.log("Inside serviece getAllAdvisor()")
+    return new Promise((resolve, reject) => {
+      this.http.get('/registrationForm/getAllAdvisor/' + id)
+        .map(res => res.json())
+        .subscribe(res => {
+          resolve(res)
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  getOneAdvisor(id) {
+    console.log("Inside serviece getAllAdvisor()")
+    return new Promise((resolve, reject) => {
+      this.http.get('/registrationForm/getOneAdvisor/' + id)
         .map(res => res.json())
         .subscribe(res => {
           resolve(res)
