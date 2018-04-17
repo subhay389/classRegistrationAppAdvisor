@@ -84,7 +84,11 @@ let providers = {
     KeysPipe
   ],
   imports: [
+    MatCardModule,
+    MatIconModule,
+    MatDividerModule,
     MatDialogModule,
+    MatListModule,
     MatPaginatorModule,
     MatButtonModule,
     MatTableModule,

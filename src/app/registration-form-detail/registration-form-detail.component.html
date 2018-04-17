@@ -1,4 +1,60 @@
-<div class="container">
+  <div class="row">
+      <div class="col-sm-12">  
+        <mat-list>
+            <h1>{{ registrationForm.name }}</h1>
+            <h3>{{ registrationForm.studentId }}</h3>
+        </mat-list>
+
+  </div>
+  <div class="row">
+      <div class="col-sm-6">
+        <mat-list>
+              <h3 mat-subheader>Degree</h3>
+              <mat-list-item>{{ registrationForm.degree }}</mat-list-item>
+              <mat-divider></mat-divider>
+              <h3 mat-subheader>Email</h3>
+              <mat-list-item>{{ registrationForm.email }}</mat-list-item>
+              <mat-divider></mat-divider>
+              <h3 mat-subheader>Advisor</h3>
+              <mat-list-item>{{ advisorName}}</mat-list-item>
+              <mat-divider></mat-divider>
+              <h3 mat-subheader>Pin</h3>
+              <mat-list-item>{{ registrationForm.pin }}</mat-list-item>
+              <mat-divider></mat-divider>
+              <h3 mat-subheader>Courses</h3>
+              <mat-list-item *ngFor="let entry of my_crns | keys">
+                  <mat-icon mat-list-icon>create</mat-icon>
+                  <h4 mat-line>{{entry.key}}: {{entry.value}}</h4>
+              </mat-list-item>
+          </mat-list>
+      </div>
+
+      <div class="col-sm-6">
+
+        <mat-list>
+            <h3 mat-subheader>Courses Taken By Student</h3>
+              <mat-list-item *ngFor="let entry of my_crns | keys">
+                  <mat-icon mat-list-icon>label</mat-icon>
+                  <h4 mat-line>{{entry.key}}: {{entry.value}}</h4>
+              </mat-list-item>
+
+        </mat-list>
+
+      </div>
+  </div>
+  
+  <div class="row">
+      <div class="col-md-12">
+        <br>
+          <a [routerLink]="['/registration-form-edit', registrationForm._id]" class="btn btn-success">EDIT</a>
+          <button mat-raised-button color="primary" (click)="openDialog()">Approve</button>
+          <a [routerLink]="['/registration-form', registrationForm.advisor]" class="btn mat-raised-button">DONE</a>
+      </div>
+
+  </div>
+
+<!-- 
+<div >
   <h1>{{ registrationForm.name }}</h1>
   <h3>{{ registrationForm.studentId }}</h3>
   <dl class="list">
@@ -18,12 +74,12 @@
     <dd>{{ registrationForm.pin }}</dd>
   </dl>
 
-<div class="row">
+  <div class="row">
     <div class="col-md-12">
       <a [routerLink]="['/registration-form-edit', registrationForm._id]" class="btn btn-success">EDIT</a>
-      <!-- <button class="btn btn-danger" type="button" (click)="deleteRegistrationForm(registrationForm._id)">DELETE</button> -->
+
       <button mat-raised-button color="primary" (click)="openDialog()">Approve</button>
       <a [routerLink]="['/registration-form', registrationForm.advisor]" class="btn mat-raised-button">DONE</a>
     </div>
   </div>
-</div>
+</div> -->

@@ -21,21 +21,29 @@ export class RegistrationFormDetailComponent implements OnInit {
   courses = [];
   advisorName: any;
   pin: any;
+  photo: any;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, private registrationFormService: RegistrationFormService) { }
 
   ngOnInit() {
+    //registration Form Detiail
     this.getRegistrationFormDetail(this.route.snapshot.params['id']);
   }
 
   getRegistrationFormDetail(id) {
+    //Api call to get registration form
     this.registrationFormService.showRegistrationForm(id).then((res) => {
       this.registrationForm = res;
       this.uid = this.registrationForm['uid'];
       this.advisorid = this.registrationForm['advisor']
-      console.log("advisor ID");
-      console.log(this.advisorid);
+
+      //functional call to get advisor information 
       this.getAdvisorInfo(this.advisorid);
+
+      //function call to get student account information
+      this.getStudentInfo(this.registrationForm['uid']);
+
+      //api call to get CRN details for displaying
       this.registrationFormService.getCRN().then((res) => {
         this.all_crns = res[0];
         this.crn_array = this.registrationForm["crns"];
@@ -58,6 +66,19 @@ export class RegistrationFormDetailComponent implements OnInit {
     }, (err) => {
       console.log(err);
     });
+  }
+
+  getStudentInfo(uid){
+    console.log(uid);
+    this.registrationFormService.getUser(uid).then((result) => {
+      let user = result;
+      this.photo = user[0].image;
+      console.log(this.photo);
+
+      //console.log(user[0].name);
+    }, (err) => {
+      console.log(err);
+    });;
   }
 
   getAdvisorInfo(advisorid){
