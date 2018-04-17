@@ -7,7 +7,7 @@ var passport = require('passport');
 //var RegistrationForm = require('../models/RegistrationForm.js');
 var RegistrationForm = mongojs('mongodb://shitosh:shitosh@ds253918.mlab.com:53918/hu_registration', ['registration_forms']);
 
-/* GET ALL RegistrationForm */
+/* GET ALL Registration Forms */
 router.get('/allForm/:id', function(req, res, next) {
   console.log('------------Inside routes get all');
   RegistrationForm.registration_forms.find({advisor: req.params.id}, function(err, form){
@@ -138,7 +138,7 @@ router.get('/getUser/:id', function(req, res, next) {
 	});
 });
 
-/**Get All Advisor List */
+/**Get list of All Advisors */
 router.get('/getAllAdvisor/:id', function(req, res, next) {
   console.log('------------Inside routes get all advisor');
   RegistrationForm.advisor.find(function (err, products) {
