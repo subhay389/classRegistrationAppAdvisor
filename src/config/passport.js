@@ -5,7 +5,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 //loading the user model
 var User = require('../models/user.js');
 
-//load the auth varuables 
+//load the auth variables 
 var congigAuth = require('./auth');
 
 module.exports = function(passport) {
@@ -23,7 +23,7 @@ module.exports = function(passport) {
     });
 
     // =========================================================================
-    // GOOGLE ==================================================================
+    // GOOGLE =========================================================
     // =========================================================================
     passport.use(new GoogleStrategy({
 
@@ -57,7 +57,7 @@ module.exports = function(passport) {
                     newUser.google.name  = profile.displayName;
                     newUser.google.email = profile.emails[0].value; // pull the first email
 
-                    // save the user
+                    // save  user
                     newUser.save(function(err) {
                         if (err)
                             throw err;
