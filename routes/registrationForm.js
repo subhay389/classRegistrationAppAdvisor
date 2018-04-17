@@ -6,6 +6,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var passport = require('passport');
 //var RegistrationForm = require('../models/RegistrationForm.js');
 var RegistrationForm = mongojs('mongodb://shitosh:shitosh@ds253918.mlab.com:53918/hu_registration', ['registration_forms']);
+var nodemailer = require('nodemailer');
 
 /* GET ALL Registration Forms */
 router.get('/allForm/:id', function(req, res, next) {

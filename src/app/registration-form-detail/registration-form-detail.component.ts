@@ -22,12 +22,14 @@ export class RegistrationFormDetailComponent implements OnInit {
   advisorName: any;
   pin: any;
   photo: any;
+  formId: any;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, private registrationFormService: RegistrationFormService) { }
 
   ngOnInit() {
     //registration Form Detiail
     this.getRegistrationFormDetail(this.route.snapshot.params['id']);
+    this.formId = this.route.snapshot.params['id']
   }
 
   getRegistrationFormDetail(id) {
@@ -92,7 +94,44 @@ export class RegistrationFormDetailComponent implements OnInit {
     });
   }
 
-  openDialog(): void {
+  openPinDialog(): void {
+    let dialogRef = this.dialog.open(RegistrationFormDetailAddCrnComponent, {
+      width: '250px',
+      disableClose: true,
+      data: { pin: this.pin, term: this.registrationForm['term'], name: this.registrationForm['name'], studentId: this.registrationForm['studentId']  }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.pin = result;
+      this.savePin(this.pin, this.formId);
+      console.log(this.pin)
+      window.location.reload();
+    });
+  }
+
+  savePin(newPin, id){
+    var newRegistrationForm = {
+      uid: this.registrationForm['uid'],
+      studentId: this.registrationForm["studentId"],
+      name: this.registrationForm["name"],
+      degree: this.registrationForm["degree"],
+      email: this.registrationForm["email"],
+      advisor: this.registrationForm["advisor"],
+      term: this.registrationForm["term"],
+      crns: ((this.registrationForm["crns"])+ "").split(","),
+      isApproved: this.registrationForm["isApproved"],
+      updated_at: Date.now,
+      pin: newPin
+    }
+    this.registrationFormService.updateRegistrationForm(id, newRegistrationForm).then((result) => {
+      this.router.navigate(['/registration-form-detail', id]);
+    }, (err) => {
+      console.log(err);
+    });
+  }
+
+  openRejectDialog(): void {
     let dialogRef = this.dialog.open(RegistrationFormDetailAddCrnComponent, {
       width: '250px',
       disableClose: true,
@@ -105,8 +144,6 @@ export class RegistrationFormDetailComponent implements OnInit {
       console.log(this.pin)
     });
   }
-
-
 
 }
 
