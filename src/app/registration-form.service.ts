@@ -151,6 +151,17 @@ export class RegistrationFormService {
     });
   }
 
-
+  getStudentCRN(id) {
+    return new Promise((resolve, reject) => {
+      this.http.get('/registrationForm/allCRN/' + id)
+        .map(res => res.json())
+        .subscribe(res => {
+          resolve(res);
+          console.log(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
 
 }

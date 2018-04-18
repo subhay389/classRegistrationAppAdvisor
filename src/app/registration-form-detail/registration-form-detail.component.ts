@@ -19,6 +19,7 @@ export class RegistrationFormDetailComponent implements OnInit {
   crn_array = [];
   my_crns = {};
   courses = [];
+  previous_crns: any;
   advisorName: any;
   pin: any;
   photo: any;
@@ -46,24 +47,28 @@ export class RegistrationFormDetailComponent implements OnInit {
       this.getStudentInfo(this.registrationForm['uid']);
 
       //api call to get CRN details for displaying
-      this.registrationFormService.getCRN().then((res) => {
-        this.all_crns = res[0];
-        this.crn_array = this.registrationForm["crns"];
-        console.log(this.crn_array);
-        var i = 0;
-        for (i = 0; i < this.crn_array.length; i++) { 
-          if (this.crn_array[i] in this.all_crns){
-            this.my_crns[this.crn_array[i]] = this.all_crns[this.crn_array[i]]
-            this.courses.push(this.all_crns[this.crn_array[i]]);
-          }
-        }
-        var myJSON1 = JSON.stringify(this.all_crns);
-        var myJSON2 = JSON.stringify(this.my_crns);
-        this.all_crns = JSON.parse(myJSON1);
-        this.my_crns = JSON.parse(myJSON2);    
-      }, (err) => {
-        console.log(err);
-      });
+      // this.registrationFormService.getCRN().then((res) => {
+      //   this.all_crns = res[0];
+      //   this.crn_array = this.registrationForm["crns"];
+      //   console.log(this.crn_array);
+      //   var i = 0;
+      //   for (i = 0; i < this.crn_array.length; i++) { 
+      //     if (this.crn_array[i] in this.all_crns){
+      //       this.my_crns[this.crn_array[i]] = this.all_crns[this.crn_array[i]]
+      //       this.courses.push(this.all_crns[this.crn_array[i]]);
+      //     }
+      //   }
+      //   var myJSON1 = JSON.stringify(this.all_crns);
+      //   var myJSON2 = JSON.stringify(this.my_crns);
+      //   this.all_crns = JSON.parse(myJSON1);
+      //   this.my_crns = JSON.parse(myJSON2);    
+      // }, (err) => {
+      //   console.log(err);
+      // });
+      this.getCourseByCRN();
+      this.getStudentPreviousCRN(this.uid);
+
+      //api call to get all previous courses by student
       this.uid = this.registrationForm['uid'];
     }, (err) => {
       console.log(err);
@@ -93,6 +98,66 @@ export class RegistrationFormDetailComponent implements OnInit {
       console.log(err);
     });
   }
+
+  getCourseByCRN(){
+    this.registrationFormService.getCRN().then((res) => {
+      this.all_crns = res[0];
+      this.crn_array = this.registrationForm["crns"];
+      console.log(this.crn_array);
+      this.my_crns = this.crnNumberToCourse(this.crn_array);
+    }, (err) => {
+      console.log(err);
+    });
+  }
+
+  getStudentPreviousCRN(uid){
+    this.registrationFormService.getStudentCRN(uid).then((result) => {
+      console.log("Student CRN");
+      console.log(result);
+      var crn_prev_array = Object.values(result);
+      console.log(crn_prev_array);
+      crn_prev_array = this.arr_diff(this.crn_array, crn_prev_array)
+      console.log(crn_prev_array);
+      console.log("done");
+      this.previous_crns = this.crnNumberToCourse(crn_prev_array);
+    }, (err) => {
+      console.log(err);
+    });
+  }
+
+  crnNumberToCourse(required_crns){
+    var result_crn_object = {}
+    var i = 0;
+      for (i = 0; i < required_crns.length; i++) { 
+        if (required_crns[i] in this.all_crns){
+          result_crn_object[required_crns[i]] = this.all_crns[required_crns[i]]
+          this.courses.push(this.all_crns[required_crns[i]]);
+        }
+      }
+      var myJSON1 = JSON.stringify(this.all_crns);
+      var myJSON2 = JSON.stringify(result_crn_object);
+      this.all_crns = JSON.parse(myJSON1);
+      result_crn_object = JSON.parse(myJSON2);
+      return result_crn_object;
+  }
+
+  arr_diff(a1, a2) {
+    var a = [], diff = [];
+    for (var i = 0; i < a1.length; i++) {
+        a[a1[i]] = true;
+    }
+    for (var i = 0; i < a2.length; i++) {
+        if (a[a2[i]]) {
+            delete a[a2[i]];
+        } else {
+            a[a2[i]] = true;
+        }
+    }
+    for (var k in a) {
+        diff.push(k);
+    }
+    return diff;
+}
 
   openPinDialog(): void {
     let dialogRef = this.dialog.open(RegistrationFormDetailAddCrnComponent, {
