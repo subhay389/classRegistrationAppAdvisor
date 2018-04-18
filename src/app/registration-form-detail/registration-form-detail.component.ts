@@ -168,10 +168,17 @@ export class RegistrationFormDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.pin = result;
-      this.savePin(this.pin, this.formId);
-      console.log(this.pin)
-      window.location.reload();
+      if (result == undefined){
+        this.pin = this.registrationForm['pin']
+        console.log("PIN when left blank:" + this.pin)
+      }
+      else{
+        this.pin = result;
+        this.savePin(this.pin, this.formId);
+        console.log("new pin" + this.pin)
+
+        window.location.reload();
+      }
     });
   }
 
@@ -190,7 +197,16 @@ export class RegistrationFormDetailComponent implements OnInit {
       pin: newPin
     }
     this.registrationFormService.updateRegistrationForm(id, newRegistrationForm).then((result) => {
+      this.sendEmail(newRegistrationForm);
       this.router.navigate(['/registration-form-detail', id]);
+    }, (err) => {
+      console.log(err);
+    });
+  }
+
+  sendEmail(form){
+    this.registrationFormService.sendEmail(form).then((result) => {
+      console.log("email sent")
     }, (err) => {
       console.log(err);
     });
@@ -200,7 +216,7 @@ export class RegistrationFormDetailComponent implements OnInit {
     let dialogRef = this.dialog.open(RegistrationFormDetailAddCrnComponent, {
       width: '250px',
       disableClose: true,
-      data: { pin: this.pin, term: this.registrationForm['term'], name: this.registrationForm['name'], studentId: this.registrationForm['studentId']  }
+      data: { pin: this.pin, term: this.registrationForm['term'], name: this.registrationForm['name'], studentId: this.registrationForm['studentId'], formId: this.registrationForm['id']  }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -218,12 +234,32 @@ export class RegistrationFormDetailComponent implements OnInit {
 })
 export class RegistrationFormDetailAddCrnComponent {
 
-  constructor(
+  constructor( 
     public dialogRef: MatDialogRef<RegistrationFormDetailAddCrnComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   onNoClick(): void {
+
     this.dialogRef.close();
+
+  }
+
+}
+
+@Component({
+  selector: 'registration-form-detail-reject-dialog',
+  templateUrl: 'registration-form-detail-reject-dialog.html',
+})
+export class RegistrationFormDetailRejectComponent {
+
+  constructor( 
+    public dialogRef: MatDialogRef<RegistrationFormDetailRejectComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  onNoClick(): void {
+
+    this.dialogRef.close();
+
   }
 
 }
