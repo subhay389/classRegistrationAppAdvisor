@@ -32,8 +32,8 @@
       <div class="col-sm-6">
 
         <mat-list>
-            <h3 mat-subheader>Courses Taken By Student</h3>
-              <mat-list-item *ngFor="let entry of my_crns | keys">
+            <h3 mat-subheader>All other courses Taken By Student</h3>
+              <mat-list-item *ngFor="let entry of previous_crns | keys">
                   <mat-icon mat-list-icon>label</mat-icon>
                   <h4 mat-line>{{entry.key}}: {{entry.value}}</h4>
               </mat-list-item>

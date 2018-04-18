@@ -75,7 +75,6 @@ router.get('/', function(req, res, next){
 		if (err){
       res.send(err);
 		}
-    console.log(form);
     res.json(form);
     
 	});
@@ -169,7 +168,6 @@ router.get('/getUser/:id', function(req, res, next) {
 		if (err){
       res.send(err);
 		}
-    console.log(form);
     res.json(form);
     
 	});
@@ -191,11 +189,35 @@ router.get('/getOneAdvisor/:id', function(req, res, next) {
 		if (err){
       res.send(err);
 		}
-    console.log(form);
     res.json(form);
     
 	});
   
+});
+
+/* GET ALL CRNS of a student*/
+router.get('/allCRN/:id', function(req, res, next) {
+  console.log('------------Inside student CRN');
+  RegistrationForm.registration_forms.find({uid: req.params.id}, function(err, form){
+		if (err){
+      res.send(err);
+		}
+    console.log(form);
+
+    all_crns = []
+    console.log(form.length);
+    for(var i = 0; i < form.length; i++){
+      console.log("wtf");
+      crn_array = form[i]["crns"];
+      console.log(crn_array);
+      all_crns = all_crns.concat(crn_array);
+    }
+    var unique_crns = all_crns.filter(function(elem, index, self) {
+      return index == self.indexOf(elem);
+    });
+    res.json(unique_crns);
+    
+	});
 });
 
 
