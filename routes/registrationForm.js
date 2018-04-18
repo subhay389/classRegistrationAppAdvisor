@@ -15,7 +15,13 @@ router.post('/sendEmail', function(req, res, next) {
   var emailID = req.body['email'];
   var pin = req.body['pin'];
   var term = req.body['term'];
-  var message = "Your registration form has been approved. The pin for " + term + " is " + pin; 
+  if (pin == "Not Approved"){
+    var message = "Your registration form has not been approved. Please check your account for details"
+  }
+  else{
+    var message = "Your registration form has been approved. The pin for " + term + " is " + pin; 
+  }
+  
   console.log(emailID, pin, term, message)
 
   var transporter = nodemailer.createTransport({

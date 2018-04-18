@@ -42,6 +42,7 @@ export class RegistrationFormDetailComponent implements OnInit {
       this.uid = this.registrationForm['uid'];
       this.advisorid = this.registrationForm['advisor']
       this.pin = this.registrationForm['pin']
+      this.reason = this.registrationForm['reason']
 
       //functional call to get advisor information 
       this.getAdvisorInfo(this.advisorid);
@@ -191,7 +192,7 @@ export class RegistrationFormDetailComponent implements OnInit {
     let dialogRef = this.dialog.open(RegistrationFormDetailRejectComponent, {
       width: '250px',
       disableClose: true,
-      data: { pin: this.pin, term: this.registrationForm['term'], name: this.registrationForm['name'], studentId: this.registrationForm['studentId'], formId: this.registrationForm['id']  }
+      data: { reason: this.registrationForm['reason'], pin: this.pin, term: this.registrationForm['term'], name: this.registrationForm['name'], studentId: this.registrationForm['studentId'], formId: this.registrationForm['id']  }
     });
 
     dialogRef.afterClosed().subscribe(result => {
