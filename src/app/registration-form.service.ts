@@ -7,6 +7,21 @@ export class RegistrationFormService {
 
   constructor(private http: Http) { }
 
+
+  sendEmail(data){
+    console.log("service save user")
+    return new Promise((resolve, reject) => {
+      this.http.post('/registrationForm/sendEmail', data)
+        .map(res => res.json())
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+
   saveUser(data){
     console.log("service save user")
     return new Promise((resolve, reject) => {

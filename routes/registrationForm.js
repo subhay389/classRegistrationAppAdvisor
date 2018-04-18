@@ -8,6 +8,42 @@ var passport = require('passport');
 var RegistrationForm = mongojs('mongodb://shitosh:shitosh@ds253918.mlab.com:53918/hu_registration', ['registration_forms']);
 var nodemailer = require('nodemailer');
 
+
+router.post('/sendEmail', function(req, res, next) {
+  console.log("------------inside routes sendEmail")
+  console.log(req.body);
+  var emailID = req.body['email'];
+  var pin = req.body['pin'];
+  var term = req.body['term'];
+  var message = "Your registration form has been approved. The pin for " + term + " is " + pin; 
+  console.log(emailID, pin, term, message)
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'classline2018@gmail.com',
+      pass: 'Howard18'
+    }
+  });
+  
+  var mailOptions = {
+    from: 'classline2018@gmail.com',
+    to: emailID,
+    subject: 'Alternative Pin',
+    text: message
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    console.log("--------inside transporter call back ")
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('---------Email sent: ' + info.response);
+    }
+  });
+
+});
+
 /* GET ALL Registration Forms */
 router.get('/allForm/:id', function(req, res, next) {
   console.log('------------Inside routes get all');
