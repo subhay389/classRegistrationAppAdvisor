@@ -23,6 +23,7 @@ export class RegistrationFormDetailComponent implements OnInit {
   pin: any;
   photo: any;
   formId: any;
+  reason: any;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, private registrationFormService: RegistrationFormService) { }
 
@@ -30,6 +31,7 @@ export class RegistrationFormDetailComponent implements OnInit {
     //registration Form Detiail
     this.getRegistrationFormDetail(this.route.snapshot.params['id']);
     this.formId = this.route.snapshot.params['id']
+    
   }
 
   getRegistrationFormDetail(id) {
@@ -38,6 +40,7 @@ export class RegistrationFormDetailComponent implements OnInit {
       this.registrationForm = res;
       this.uid = this.registrationForm['uid'];
       this.advisorid = this.registrationForm['advisor']
+      this.pin = this.registrationForm['pin']
 
       //functional call to get advisor information 
       this.getAdvisorInfo(this.advisorid);
@@ -109,7 +112,9 @@ export class RegistrationFormDetailComponent implements OnInit {
       }
       else{
         this.pin = result;
-        this.savePin(this.pin, this.formId);
+        var reason = 'N/A'
+        var status = true
+        this.savePin(this.pin, this.formId, reason, status);
         console.log("new pin" + this.pin)
 
         window.location.reload();
@@ -117,7 +122,32 @@ export class RegistrationFormDetailComponent implements OnInit {
     });
   }
 
-  savePin(newPin, id){
+  openRejectDialog(): void {
+    let dialogRef = this.dialog.open(RegistrationFormDetailRejectComponent, {
+      width: '250px',
+      disableClose: true,
+      data: { pin: this.pin, term: this.registrationForm['term'], name: this.registrationForm['name'], studentId: this.registrationForm['studentId'], formId: this.registrationForm['id']  }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result == undefined){
+        this.pin = this.registrationForm['pin']
+        console.log("PIN when left blank:" + this.pin)
+      }
+      else{
+        this.pin = "Not Approved";
+        var reason = result;
+        var status = false;
+        this.savePin(this.pin, this.formId, reason, status);
+        console.log("new pin" + this.pin)
+
+        window.location.reload();
+      }
+    });
+  }
+
+  savePin(newPin, id, reason, status){
     var newRegistrationForm = {
       uid: this.registrationForm['uid'],
       studentId: this.registrationForm["studentId"],
@@ -127,9 +157,10 @@ export class RegistrationFormDetailComponent implements OnInit {
       advisor: this.registrationForm["advisor"],
       term: this.registrationForm["term"],
       crns: ((this.registrationForm["crns"])+ "").split(","),
-      isApproved: this.registrationForm["isApproved"],
+      isApproved: status,
       updated_at: Date.now,
-      pin: newPin
+      pin: newPin,
+      reason: reason
     }
     this.registrationFormService.updateRegistrationForm(id, newRegistrationForm).then((result) => {
       this.sendEmail(newRegistrationForm);
@@ -147,19 +178,7 @@ export class RegistrationFormDetailComponent implements OnInit {
     });
   }
 
-  openRejectDialog(): void {
-    let dialogRef = this.dialog.open(RegistrationFormDetailAddCrnComponent, {
-      width: '250px',
-      disableClose: true,
-      data: { pin: this.pin, term: this.registrationForm['term'], name: this.registrationForm['name'], studentId: this.registrationForm['studentId'], formId: this.registrationForm['id']  }
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.pin = result;
-      console.log(this.pin)
-    });
-  }
 
 }
 

@@ -87,7 +87,7 @@ export class RegistrationFormComponent implements OnInit{
         if (this.registrationForm[i]['pin']== 'N/A'){
             pending.push(this.registrationForm[i]);
         }
-        else{
+        else if (this.registrationForm[i]['pin'] != 'Not Approved'){
             approved.push(this.registrationForm[i]);
         }
       }

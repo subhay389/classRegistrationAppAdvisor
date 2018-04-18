@@ -53,7 +53,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import { RegistrationFormCreateComponent } from './registration-form-create/registration-form-create.component';
-import { RegistrationFormDetailComponent, RegistrationFormDetailAddCrnComponent } from './registration-form-detail/registration-form-detail.component';
+import { RegistrationFormDetailComponent, RegistrationFormDetailAddCrnComponent, RegistrationFormDetailRejectComponent } from './registration-form-detail/registration-form-detail.component';
 import { RegistrationFormEditComponent } from './registration-form-edit/registration-form-edit.component';
 import { LoginPageComponent} from './login-page/login-page.component';
 
@@ -81,6 +81,7 @@ let providers = {
     RegistrationFormEditComponent,
     LoginPageComponent,
     RegistrationFormDetailAddCrnComponent,
+    RegistrationFormDetailRejectComponent,
     KeysPipe
   ],
   imports: [
@@ -105,7 +106,7 @@ let providers = {
     MatInputModule,
     RouterModule.forRoot(ROUTES)
   ],
-  entryComponents: [RegistrationFormDetailComponent, RegistrationFormDetailAddCrnComponent, RegistrationFormComponent],
+  entryComponents: [RegistrationFormDetailComponent, RegistrationFormDetailAddCrnComponent, RegistrationFormComponent, RegistrationFormDetailRejectComponent],
   providers: [
     RegistrationFormService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
