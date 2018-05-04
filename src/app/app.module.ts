@@ -98,6 +98,7 @@ let providers = {
     ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
+    MatSelectModule,
     FormsModule,
     Angular2SocialLoginModule,
     MatNativeDateModule,
